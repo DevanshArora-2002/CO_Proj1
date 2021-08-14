@@ -22,12 +22,13 @@ def check_pnemonic(word,user_input,dict):
     else:
         return ""
 def main():
-    print("Enter the code here")
-    line=input()
     code=""
-    while(len(line)!=0):
-        code+=line+'\n'
-        line=input()
+    while True:
+        try:
+            line=input()
+            code+=line+'\n'
+       except EOFError:
+            break
     instructions=code.split('\n')
     instructions.pop(len(instructions)-1)
     if('hlt' not in instructions[-1]):
