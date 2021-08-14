@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Add command to run your program here
-python3 Simple-Assembler/main.py --no-sim $@
+python3 main.py --no-sim $@
