@@ -5,7 +5,7 @@ from functionB_C import func_B_C
 import error
 def check_pnemonic(word,user_input,dict):
     if(word=='var'):
-        raise IllegalVariable("Variable declared in between")
+        raise error.IllegalVariable("Variable declared in between")
     lst_A=['add','sub','mul','xor','or','and']
     lst_B_C=['mov','div','ls','rs','cmp','not']
     lst_D=['ld','st']
