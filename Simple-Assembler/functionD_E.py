@@ -15,8 +15,7 @@ def func_D(user_input,dict_input):
     if(arr[2] not in dict_input):
         raise error.IllegalVariable("Variable declaration missing")
     x=dict_input[arr[2]] # getting numeric value from input dictionary
-    y=decimal_to_binary(x) # converting decimal to binary
-    return opcode+reg_address[arr[1]]+y
+    return opcode+reg_address[arr[1]]+x
 def func_E(user_input,dict_input):
     arr=user_input.split()
     if(arr[1] not in dict_input):
