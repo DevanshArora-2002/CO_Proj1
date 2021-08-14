@@ -2,7 +2,7 @@ from functools import reduce
 from functionA_F import func_A,func_F
 from functionD_E import func_D,func_E
 from functionB_C import func_B_C
-from set_var_label import set_label_addr,set_val_addr
+from set_var_label import set_label_addr,set_var_addr
 import error
 def check_pnemonic(word,user_input,dict):
     if(word=='var'):
