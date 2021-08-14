@@ -1,5 +1,5 @@
 import error 
-import decimal_to_binary from functionB_C
+from functionB_C import decimal_to_binary
 def func_D(user_input,dict_input):
     arr=user_input.split() # storing user input in array
     if(len(arr)!=3):
