@@ -27,7 +27,7 @@ def main():
         try:
             line=input()
             code+=line+'\n'
-       except EOFError:
+        except EOFError:
             break
     instructions=code.split('\n')
     instructions.pop(len(instructions)-1)
