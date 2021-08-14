@@ -1,4 +1,4 @@
-import decimal_to_binary from functionB_C
+from functionB_C import decimal_to_binary
 def set_label_addr(instructions):
     label_addr = {} # stores label addr in the format {"label_name1":"binary_addr"}
     for i in range(0, len(instructions)):
