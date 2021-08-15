@@ -30,7 +30,7 @@ def main():
         except EOFError:
             break
     instructions=code.split('\n')
-    if(len(instructions)>256):
+    if(len(instructions)>257):
         raise error.SyntaxException("Instruction size exceeded")
     instructions.pop(len(instructions)-1)
     if('hlt' not in instructions[-1]):
