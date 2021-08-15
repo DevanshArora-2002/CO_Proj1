@@ -30,6 +30,8 @@ def main():
         except EOFError:
             break
     instructions=code.split('\n')
+    if(len(instructions)>256):
+        raise error.SyntaxException("Instruction size exceeded")
     instructions.pop(len(instructions)-1)
     if('hlt' not in instructions[-1]):
         raise error.IllegalHltInstruction("Hlt instruction missing")
