@@ -13,3 +13,6 @@ Starter repository for Computer Organization, Monsoon 2021 semester, assignment 
 	1. `--verbose`: Prints verbose output
 	2. `--no-asm`: Does not evaluate the assembler
 	3. `--no-sim`: Does not evaluate the simulator
+The earlier repository was created using personal emailId and as per the guidelines it had to be created using IIITD emailId. So as per the message the ownership has been transferred from personal emailId to IIITD emailId.
+For evaluation please consider all commits from Username:DevanshArora2002 as Username:DevanshArora-2002
+
