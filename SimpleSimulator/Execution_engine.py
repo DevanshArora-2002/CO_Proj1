@@ -10,6 +10,9 @@ class ExecutionEngine():
         self.memory=memory
         self.program_counter=program_counter
         self.compare=False
+        """if the next instruction to compare instruction 
+           is not a jump instruction then the flag is set to 0
+        """
         pass
     def execute(self,instr,PC,reg_file,cycle):
         opcode=instr[0:5]
@@ -18,6 +21,7 @@ class ExecutionEngine():
                 register=reg_file.register_file
                 register[-1]='0'*16
                 reg_file.update(register)
+                self.compare=False               
             """
             The code for arthemetic operations
             """
@@ -28,8 +32,8 @@ class ExecutionEngine():
             """
             reg_code2 = instr[-6:-3]
             reg_code1 = instr[-9:-6]
-            if(opcode!='00111'):
-                if(opcode=='00000'):
+            if(opcode!='00111'):                
+                if(opcode=='00000'):                    
                     updated_reg_file=add_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
                     reg_file.update(updated_reg_file)         
                 elif(opcode=='00001'):
@@ -47,6 +51,11 @@ class ExecutionEngine():
             """
             This code is for shift operations
             """
+            if(self.compare):
+                register=reg_file.register_file
+                register[-1]='0'*16
+                reg_file.update(register)
+                self.compare=False
             imm=instr[-8:]
             reg_code=instr[-11:-8]
             if(opcode=='01000'):
@@ -61,6 +70,11 @@ class ExecutionEngine():
             """
             This code is for bitwise operations
             """
+            if(self.compare):
+                register=reg_file.register_file
+                register[-1]='0'*16
+                reg_file.update(register)
+                self.compare=False
             reg_code3 = instr[-3:]
             """
             For div function reg_code3 will act as the reg_code2 and similarly for 
@@ -87,6 +101,11 @@ class ExecutionEngine():
             """
             This is for mov instruction
             """
+            if(self.compare):
+                register=reg_file.register_file
+                register[-1]='0'*16
+                reg_file.update(register)
+                self.compare=False
             if(opcode=='00011'):
                 reg_code2=instr[-3:]
                 reg_code1=instr[-6:-3]
@@ -102,7 +121,7 @@ class ExecutionEngine():
         elif(opcode=='01110'):
             """
             This code is for compare instructions
-            """
+            """            
             reg_2=instr[-3:]
             reg_1=instr[-6:-3]
             updated_reg_file=cmp(reg_file.register_file,reg_1,reg_2)
@@ -129,12 +148,18 @@ class ExecutionEngine():
                 return False,nextPC,reg_file
             elif(opcode=='10010'):
                 updated_reg_file,nextPC=eq_jump(reg_file.register_file,PC,mem_addr)
-                reg_file.update(updated_reg_file)
+                reg_file.update(updated_reg_file)                
                 return False,nextPC,reg_file
+            
         elif(opcode in ['00101','00100']):
             """
             This is the code for load store instructions
             """
+            if(self.compare):
+                register=reg_file.register_file
+                register[-1]='0'*16
+                reg_file.update(register)
+                self.compare=False
             if(opcode=='00100'):
                 updated_reg_file=load(reg_file.register_file,self.memory,instr[5:8],instr[-8:])
                 reg_file.update(updated_reg_file)
