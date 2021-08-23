@@ -3,17 +3,21 @@ from bit_func import xor_func,or_func,and_func,not_func
 from shift_func import ls_func,rs_func
 from mov_func import mov_reg,mov_imm
 from jumping import gt_jump,lt_jump,eq_jump,uncond_jump
-from op_functions import binary_to_decimal,decimal_to_binary
 from compare_function import cmp
 from load_store import load,store
 class ExecutionEngine():
     def __init__(self,memory,program_counter):
         self.memory=memory
         self.program_counter=program_counter
+        self.compare=False
         pass
     def execute(self,instr,PC,reg_file,cycle):
         opcode=instr[0:5]
         if(opcode in ['00000','00001','00110','00111']):
+            if(self.compare):
+                register=reg_file.register_file
+                register[-1]='0'*16
+                reg_file.update(register)
             """
             The code for arthemetic operations
             """
@@ -83,14 +87,14 @@ class ExecutionEngine():
             """
             This is for mov instruction
             """
-            if(opcode=='00010'):
+            if(opcode=='00011'):
                 reg_code2=instr[-3:]
                 reg_code1=instr[-6:-3]
                 updated_reg_file=mov_reg(reg_file.register_file,reg_code1,reg_code2)
                 reg_file.update(updated_reg_file)
             else:
                 imm=instr[-8:]
-                reg_code=instr[-11:-8]
+                reg_code=instr[5:8]
                 updated_reg_file=mov_imm(reg_file.register_file,reg_code,imm)
                 reg_file.update(updated_reg_file)
             PC+=1
@@ -104,6 +108,7 @@ class ExecutionEngine():
             updated_reg_file=cmp(reg_file.register_file,reg_1,reg_2)
             reg_file.update(updated_reg_file)
             PC+=1
+            self.compare=True
             return False,PC,reg_file
         elif(opcode in ['01111','10000','10001','10010']):
             """
@@ -126,11 +131,11 @@ class ExecutionEngine():
                 updated_reg_file,nextPC=eq_jump(reg_file.register_file,PC,mem_addr)
                 reg_file.update(updated_reg_file)
                 return False,nextPC,reg_file
-        elif(opcode in ['00011','00100']):
+        elif(opcode in ['00101','00100']):
             """
             This is the code for load store instructions
             """
-            if(opcode=='00011'):
+            if(opcode=='00100'):
                 updated_reg_file=load(reg_file.register_file,self.memory,instr[5:8],instr[-8:])
                 reg_file.update(updated_reg_file)
                 PC+=1
@@ -138,6 +143,6 @@ class ExecutionEngine():
             else:
                 self.memory=store(reg_file.register_file,self.memory,instr[5:8],instr[-8:])
                 PC+=1
-                return False,PC
+                return False,PC,reg_file
         else:
             return True,PC,reg_file
