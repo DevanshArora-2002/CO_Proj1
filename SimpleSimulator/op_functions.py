@@ -8,7 +8,7 @@ def add_func(register_file,reg_code1,reg_code2,reg_code3):
     val3=binary_to_decimal(str_val3)
     val1=val2+val3
     if(val1>255):
-        register_file[7][-4]=1
+        register_file[-1]='0'*12+'1000'
         return register_file
     str_val1=decimal_to_binary(val1)
     register_file[dict[reg_code1]]='0'*8+str_val1
@@ -21,7 +21,7 @@ def sub_func(register_file,reg_code1,reg_code2,reg_code3):
     val3=binary_to_decimal(str_val3)
     if(val3>val2):
         register_file[dict[reg_code1]]='0'*16
-        register_file[7][-4]=1
+        register_file[-1]='0'*12+'1000'
         return register_file
     val1=val2-val3
     str_val1=decimal_to_binary(val1)
@@ -35,7 +35,7 @@ def mul_func(register_file,reg_code1,reg_code2,reg_code3):
     val3=binary_to_decimal(str_val3)
     val1=val2*val3
     if(val1>255):
-        register_file[7][-4]=1
+        register_file[-1]='0'*12+'1000'
         return register_file
     str_val1=decimal_to_binary(val1)
     register_file[dict[reg_code1]]='0'*8+str_val1
