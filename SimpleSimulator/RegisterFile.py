@@ -1,6 +1,3 @@
-from _typeshed import Self
-
-
 class RegisterRecord():
     """
     This class saves the register file as it's own register_file
