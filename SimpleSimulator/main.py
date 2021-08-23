@@ -9,19 +9,20 @@ def main():
             instructions.append(input())
         except EOFError:
             break
-    halted=False
+    halted = False
     reg_obj = RegisterRecord()
     memory = Memory()
     memory.initialize(instructions)
     PC = program_counter(0)
-    execute = ExecutionEngine(memory, reg_obj.register_file, PC)
+    execute = ExecutionEngine(memory, PC)
     cycle = 0
     while not halted:
         instr=memory.fetch_using_PC(PC.getval(),cycle)
-        halted,Next_PC=execute.execute(instr,cycle)
+        halted,Next_PC,updated_reg_obj=execute.execute(instr,PC.getval(),reg_obj,cycle)
+        reg_obj=updated_reg_obj
         PC.dump()
         reg_obj.dump()
-        PC=Next_PC
+        PC.update(Next_PC)
     memory.dump()
 if __name__ == "__main__":
     main()
