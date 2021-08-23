@@ -25,11 +25,16 @@ def cmp(register_file,reg_code1,reg_code2):
     and then sets the flag register accordingly
     """
     if(val1>val2):
-        register_file[-1][-2]=1
+        str1=register_file[-1][0:-2]
+        str2=register_file[-1][-1]
+        register_file[-1]=str1+'1'+str2
         return register_file
     if(val1<val2):
-        register_file[-1][-3]=1
+        str1=register_file[-1][0:-3]
+        str2=register_file[-1][-2:]
+        register_file[-1]=str1+'1'+str2
         return register_file
     else:
-        register_file[-1][-1]=1
+        str1=register_file[-1][0:-1]
+        register_file=str1+'1'
         return register_file
