@@ -66,7 +66,7 @@ class ExecutionEngine():
                 register=reg_file.register_file
                 register[-1]='0'*16
                 reg_file.update(register)
-                self.compare=False       
+                self.compare=False
             return False, PC,reg_file
         elif(opcode in ['01010','01011','01100','01101']):
             """
@@ -141,18 +141,38 @@ class ExecutionEngine():
             if(opcode=='01111'):
                 updated_reg_file,nextPC=uncond_jump(reg_file.register_file,mem_addr)
                 reg_file.update(updated_reg_file)
+                if (self.compare):
+                    register = reg_file.register_file
+                    register[-1] = '0' * 16
+                    reg_file.update(register)
+                    self.compare = False
                 return False,nextPC,reg_file
             elif(opcode=='10000'):
                 updated_reg_file,nextPC=lt_jump(reg_file.register_file,PC,mem_addr)
                 reg_file.update(updated_reg_file)
+                if (self.compare):
+                    register = reg_file.register_file
+                    register[-1] = '0' * 16
+                    reg_file.update(register)
+                    self.compare = False
                 return False,nextPC,reg_file
             elif(opcode=='10001'):
                 updated_reg_file,nextPC=gt_jump(reg_file.register_file,PC,mem_addr)
                 reg_file.update(updated_reg_file)
+                if (self.compare):
+                    register = reg_file.register_file
+                    register[-1] = '0' * 16
+                    reg_file.update(register)
+                    self.compare = False
                 return False,nextPC,reg_file
             elif(opcode=='10010'):
                 updated_reg_file,nextPC=eq_jump(reg_file.register_file,PC,mem_addr)
-                reg_file.update(updated_reg_file)                
+                reg_file.update(updated_reg_file)
+                if (self.compare):
+                    register = reg_file.register_file
+                    register[-1] = '0' * 16
+                    reg_file.update(register)
+                    self.compare = False
                 return False,nextPC,reg_file
             
         elif(opcode in ['00101','00100']):
@@ -169,10 +189,10 @@ class ExecutionEngine():
                 self.memory=store(reg_file.register_file,self.memory,instr[5:8],instr[-8:])
                 PC+=1
                 if(self.compare):
-                register=reg_file.register_file
-                register[-1]='0'*16
-                reg_file.update(register)
-                self.compare=False       
+                    register=reg_file.register_file
+                    register[-1]='0'*16
+                    reg_file.update(register)
+                    self.compare=False       
                 return False,PC,reg_file
         else:
             return True,PC,reg_file
