@@ -19,7 +19,7 @@ class program_counter():
         :return:
         """
         val=decimal_to_binary(self.pc)
-        return val
+        print(val,end=" ")
     def update(self,counter_value):
         """
         Updates the value of PC
