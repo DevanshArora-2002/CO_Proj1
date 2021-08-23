@@ -1,6 +1,6 @@
 from decimal_to_binary import decimal_to_binary
 from binary_to_decimal import binary_to_decimal
-def add(register_file,reg_code1,reg_code2,reg_code3):
+def add_func(register_file,reg_code1,reg_code2,reg_code3):
     dict={'000':0,'001':1,'010':2,'011':3,'100':4,'101':5,'110':6,'111':7}
     str_val2=register_file[dict[reg_code2]]
     str_val3=register_file[dict[reg_code3]]
