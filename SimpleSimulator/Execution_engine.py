@@ -26,15 +26,19 @@ class ExecutionEngine():
             reg_code1 = instr[-9:-6]
             if(opcode!='00111'):
                 if(opcode=='00000'):
-                    reg_file.register_file=add_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    updated_reg_file=add_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    reg_file.update(updated_reg_file)         
                 elif(opcode=='00001'):
-                    reg_file.register_file=sub_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    updated_reg_file=sub_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    reg_file.update(updated_reg_file)
                 else:
-                    reg_file.register_file=mul_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    updated_reg_file=mul_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    reg_file.update(updated_reg_file)
             else:
-                reg_file.register_file=div_func(reg_file.register_file,reg_code2,reg_code3)
+                updated_reg_file=div_func(reg_file.register_file,reg_code2,reg_code3)
+                reg_file.update(updated_reg_file)
             PC+=1
-            return False,PC
+            return False,PC,reg_file
         elif(opcode in ['01000','01001']):
             """
             This code is for shift operations
@@ -42,11 +46,13 @@ class ExecutionEngine():
             imm=instr[-8:]
             reg_code=instr[-11:-8]
             if(opcode=='01000'):
-                reg_file.register_file=rs_func(reg_file.register_file,reg_code,imm)
+                updated_reg_file=rs_func(reg_file.register_file,reg_code,imm)
+                reg_file.update(updated_reg_file)
             else:
-                reg_file.register_file=ls_func(reg_file.register_file,reg_code,imm)
+                updated_reg_file=ls_func(reg_file.register_file,reg_code,imm)
+                reg_file.update(updated_reg_file)
             PC+=1
-            return False, PC
+            return False, PC,reg_file
         elif(opcode in ['01010','01011','01100','01101']):
             """
             This code is for bitwise operations
@@ -60,15 +66,19 @@ class ExecutionEngine():
             reg_code1 = instr[-9:-6]
             if(opcode!='01101'):
                 if(opcode=='01010'):
-                    reg_file.register_file=xor_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    updated_reg_file=xor_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    reg_file.update(updated_reg_file)
                 elif(opcode=='01011'):
-                    reg_file.register_file=or_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    updated_reg_file=or_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    reg_file.update(updated_reg_file)
                 else:
-                    reg_file.register_file=and_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    updated_reg_file=and_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    reg_file.update(updated_reg_file)
             else:
-                reg_file.register_file=not_func(reg_file.register_file,reg_code2,reg_code3)
+                updated_reg_file=not_func(reg_file.register_file,reg_code2,reg_code3)
+                reg_file.update(updated_reg_file)
             PC+=1
-            return False, PC
+            return False, PC,reg_file
         elif(opcode in ['00010','00011']):
             """
             This is for mov instruction
@@ -76,22 +86,25 @@ class ExecutionEngine():
             if(opcode=='00010'):
                 reg_code2=instr[-3:]
                 reg_code1=instr[-6:-3]
-                reg_file.register_file=mov_reg(reg_file.register_file,reg_code1,reg_code2)
+                updated_reg_file=mov_reg(reg_file.register_file,reg_code1,reg_code2)
+                reg_file.update(updated_reg_file)
             else:
                 imm=instr[-8:]
                 reg_code=instr[-11:-8]
-                reg_file.register_file=mov_imm(reg_file.register_file,reg_code,imm)
+                updated_reg_file=mov_imm(reg_file.register_file,reg_code,imm)
+                reg_file.update(updated_reg_file)
             PC+=1
-            return False, PC
+            return False, PC,reg_file
         elif(opcode=='01110'):
             """
             This code is for compare instructions
             """
             reg_2=instr[-3:]
             reg_1=instr[-6:-3]
-            reg_file.register_file=cmp(reg_file.register_file,reg_1,reg_2)
+            updated_reg_file=cmp(reg_file.register_file,reg_1,reg_2)
+            reg_file.update(updated_reg_file)
             PC+=1
-            return False,PC
+            return False,PC,reg_file
         elif(opcode in ['01111','10000','10001','10010']):
             """
             This code is for jump instructions
@@ -127,4 +140,4 @@ class ExecutionEngine():
                 PC+=1
                 return False,PC
         else:
-            return True,PC
+            return True,PC,reg_file
