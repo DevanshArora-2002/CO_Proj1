@@ -17,11 +17,7 @@ class ExecutionEngine():
     def execute(self,instr,PC,reg_file,cycle):
         opcode=instr[0:5]
         if(opcode in ['00000','00001','00110','00111']):
-            if(self.compare):
-                register=reg_file.register_file
-                register[-1]='0'*16
-                reg_file.update(register)
-                self.compare=False               
+                    
             """
             The code for arthemetic operations
             """
@@ -46,16 +42,17 @@ class ExecutionEngine():
                 updated_reg_file=div_func(reg_file.register_file,reg_code2,reg_code3)
                 reg_file.update(updated_reg_file)
             PC+=1
+            if(self.compare):
+                register=reg_file.register_file
+                register[-1]='0'*16
+                reg_file.update(register)
+                self.compare=False       
             return False,PC,reg_file
         elif(opcode in ['01000','01001']):
             """
             This code is for shift operations
             """
-            if(self.compare):
-                register=reg_file.register_file
-                register[-1]='0'*16
-                reg_file.update(register)
-                self.compare=False
+            
             imm=instr[-8:]
             reg_code=instr[-11:-8]
             if(opcode=='01000'):
@@ -65,16 +62,17 @@ class ExecutionEngine():
                 updated_reg_file=ls_func(reg_file.register_file,reg_code,imm)
                 reg_file.update(updated_reg_file)
             PC+=1
+            if(self.compare):
+                register=reg_file.register_file
+                register[-1]='0'*16
+                reg_file.update(register)
+                self.compare=False       
             return False, PC,reg_file
         elif(opcode in ['01010','01011','01100','01101']):
             """
             This code is for bitwise operations
             """
-            if(self.compare):
-                register=reg_file.register_file
-                register[-1]='0'*16
-                reg_file.update(register)
-                self.compare=False
+            
             reg_code3 = instr[-3:]
             """
             For div function reg_code3 will act as the reg_code2 and similarly for 
@@ -96,16 +94,17 @@ class ExecutionEngine():
                 updated_reg_file=not_func(reg_file.register_file,reg_code2,reg_code3)
                 reg_file.update(updated_reg_file)
             PC+=1
+            if(self.compare):
+                register=reg_file.register_file
+                register[-1]='0'*16
+                reg_file.update(register)
+                self.compare=False       
             return False, PC,reg_file
         elif(opcode in ['00010','00011']):
             """
             This is for mov instruction
             """
-            if(self.compare):
-                register=reg_file.register_file
-                register[-1]='0'*16
-                reg_file.update(register)
-                self.compare=False
+            
             if(opcode=='00011'):
                 reg_code2=instr[-3:]
                 reg_code1=instr[-6:-3]
@@ -117,6 +116,11 @@ class ExecutionEngine():
                 updated_reg_file=mov_imm(reg_file.register_file,reg_code,imm)
                 reg_file.update(updated_reg_file)
             PC+=1
+            if(self.compare):
+                register=reg_file.register_file
+                register[-1]='0'*16
+                reg_file.update(register)
+                self.compare=False       
             return False, PC,reg_file
         elif(opcode=='01110'):
             """
@@ -155,11 +159,7 @@ class ExecutionEngine():
             """
             This is the code for load store instructions
             """
-            if(self.compare):
-                register=reg_file.register_file
-                register[-1]='0'*16
-                reg_file.update(register)
-                self.compare=False
+            
             if(opcode=='00100'):
                 updated_reg_file=load(reg_file.register_file,self.memory,instr[5:8],instr[-8:])
                 reg_file.update(updated_reg_file)
@@ -168,6 +168,11 @@ class ExecutionEngine():
             else:
                 self.memory=store(reg_file.register_file,self.memory,instr[5:8],instr[-8:])
                 PC+=1
+                if(self.compare):
+                register=reg_file.register_file
+                register[-1]='0'*16
+                reg_file.update(register)
+                self.compare=False       
                 return False,PC,reg_file
         else:
             return True,PC,reg_file
