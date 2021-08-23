@@ -8,15 +8,19 @@ class Memory:
         '''
         Initializes memory to an array of length 256 with 16 bit 0s in string format.
         '''
-        self.self = ["0000000000000000"] * 256
+        self.mem_arr = ["0000000000000000"] * 256
 
     def initialize(self, instructions):
         '''
         Copies instructions to memory in appropriate locations.
         Input -> instructions : list of 16 bit binary strings
         '''
-        for i in range(len(instructions)):
-            self.self[i] = instructions[i]
+        #for i in range(len(instructions)):
+            #self.mem_arr[i] = instructions[i]
+        for i in range(len(instructions),256):
+            zero='0'*16
+            instructions.append(zero)
+        self.mem_arr=instructions
 
     def set_value_using_PC(self, value, PC):
         '''
@@ -24,7 +28,7 @@ class Memory:
         Input -> value : 8 bit binary string
                  PC : 8 bit binary string
         '''
-        self.self[binary_to_decimal(PC) - 1] = "00000000" + value
+        self.mem_arr[binary_to_decimal(PC) - 1] = "00000000" + value
 
     def fetch_using_PC(self, PC, cycle):
         '''
@@ -32,11 +36,11 @@ class Memory:
         Input -> PC : 8 bit binary string
         Output -> 16 bit binary string
         '''
-        return self.self[binary_to_decimal(PC) - 1]
+        return self.mem_arr[PC]
 
     def dump(self):
         '''
         Prints the entire contents of the memory.
         '''
-        for i in range(len(self.self)):
-            print(self.self[i])
+        for i in range(len(self.mem_arr)):
+            print(self.mem_arr[i])
