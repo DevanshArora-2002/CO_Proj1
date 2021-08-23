@@ -10,5 +10,5 @@ def set_var_addr(variables, len_instr): #len_instr contains the length of instru
     var_addr = {} # stores variable addr as {"var_name1":"binary_addr1"}
     for i in range(0, len(variables)):
         variables_str=variables[i].split()
-        var_addr.update({variables_str[1]:decimal_to_binary(len_instr+i)})
+        var_addr.update({variables_str[1]:decimal_to_binary(len_instr+i,i+1)})
     return var_addr
