@@ -26,7 +26,7 @@ class Memory:
         '''
         self.self[binary_to_decimal(PC) - 1] = "00000000" + value
 
-    def fetch_using_PC(self, PC):
+    def fetch_using_PC(self, PC, cycle):
         '''
         Returns the value stored a location pointed by PC.
         Input -> PC : 8 bit binary string
