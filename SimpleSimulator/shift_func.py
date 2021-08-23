@@ -1,3 +1,5 @@
+from binary_to_decimal import binary_to_decimal
+from decimal_to_binary import decimal_to_binary
 def ls_func(register_file,reg_code1,imm):
     str_val1=register_file[dict[reg_code1]]
     val1=binary_to_decimal(str_val1)
