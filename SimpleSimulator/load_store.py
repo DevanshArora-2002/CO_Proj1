@@ -26,5 +26,5 @@ def store(register_file, memory, reg1, mem_addr):
     '''
     dict = {'000': 0, '001': 1, '010': 2, '011': 3, '100': 4, '101': 5, '110': 6, '111': 7}
     data = register_file[dict[reg1]]
-    memory[binary_to_decimal(mem_addr)] = data
+    memory.set_variable(data,mem_addr)
     return memory
