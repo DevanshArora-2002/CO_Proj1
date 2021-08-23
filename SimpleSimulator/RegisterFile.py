@@ -1,3 +1,6 @@
+from _typeshed import Self
+
+
 class RegisterRecord():
     """
     This class saves the register file as it's own register_file
@@ -8,6 +11,9 @@ class RegisterRecord():
         self.register_file=[]
         for i in range(0,8):
             self.register_file.append(str1)
+    pass
+    def update(self,file):
+        self.register_file=file
     pass
     def dump(self):
         for i in range(0,8):
