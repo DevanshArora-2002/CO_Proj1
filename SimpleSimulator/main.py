@@ -36,6 +36,8 @@ def main():
             mem_accesses.append(instr)
     memory.dump()
     plt.scatter(cycles, mem_accesses)
+    plt.xlabel("Cycles")
+    plt.ylabel("Memory Addresses")
     plt.savefig("this_plot.png")
 if __name__ == "__main__":
     main()
