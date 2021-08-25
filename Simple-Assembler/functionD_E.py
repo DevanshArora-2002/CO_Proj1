@@ -9,7 +9,7 @@ def func_D(user_input,dict_input,line_no):
     if(arr[0]=="st"):
         opcode="00101"
     reg_address = {"R0": "000", "R1": "001", "R2": "010", "R3": "011",
-                   "R4": "100", "R5": "101", "R6": "110", "FLAGS": "111"}
+                   "R4": "100", "R5": "101", "R6": "110"}
     if(arr[1] not in reg_address):
         raise error.SyntaxException("Invalid use if registers",line_no)
     if(arr[2] not in dict_input):
