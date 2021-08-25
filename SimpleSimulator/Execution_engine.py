@@ -15,7 +15,7 @@ class ExecutionEngine():
         """
         pass
     def execute(self,instr,PC,reg_file,cycle):
-        memory_access = {cycle: instr}
+        mem_lst = []
         opcode=instr[0:5]
         if(opcode in ['00000','00001','00110','00111']):
                     
@@ -48,7 +48,7 @@ class ExecutionEngine():
                 register[-1]='0'*16
                 reg_file.update(register)
                 self.compare=False       
-            return False,PC,reg_file,memory_access
+            return False,PC,reg_file,mem_lst
         elif(opcode in ['01000','01001']):
             """
             This code is for shift operations
@@ -68,7 +68,7 @@ class ExecutionEngine():
                 register[-1]='0'*16
                 reg_file.update(register)
                 self.compare=False
-            return False, PC,reg_file,memory_access
+            return False, PC,reg_file,mem_lst
         elif(opcode in ['01010','01011','01100','01101']):
             """
             This code is for bitwise operations
@@ -100,7 +100,7 @@ class ExecutionEngine():
                 register[-1]='0'*16
                 reg_file.update(register)
                 self.compare=False       
-            return False, PC,reg_file,memory_access
+            return False, PC,reg_file,mem_lst
         elif(opcode in ['00010','00011']):
             """
             This is for mov instruction
@@ -122,7 +122,7 @@ class ExecutionEngine():
                 register[-1]='0'*16
                 reg_file.update(register)
                 self.compare=False       
-            return False, PC,reg_file, memory_access
+            return False, PC,reg_file, mem_lst
         elif(opcode=='01110'):
             """
             This code is for compare instructions
@@ -133,13 +133,13 @@ class ExecutionEngine():
             reg_file.update(updated_reg_file)
             PC+=1
             self.compare=True
-            return False,PC,reg_file,memory_access
+            return False,PC,reg_file,mem_lst
         elif(opcode in ['01111','10000','10001','10010']):
             """
             This code is for jump instructions
             """
             mem_addr=instr[-8:]
-            memory_access.update({cycle:[instr, mem_addr]})
+            mem_lst.append(mem_addr)
             if(opcode=='01111'):
                 updated_reg_file,nextPC=uncond_jump(reg_file.register_file,mem_addr)
                 reg_file.update(updated_reg_file)
@@ -148,7 +148,7 @@ class ExecutionEngine():
                     register[-1] = '0' * 16
                     reg_file.update(register)
                     self.compare = False
-                return False,nextPC,reg_file,memory_access
+                return False,nextPC,reg_file,mem_lst
             elif(opcode=='10000'):
                 updated_reg_file,nextPC=lt_jump(reg_file.register_file,PC,mem_addr)
                 reg_file.update(updated_reg_file)
@@ -157,7 +157,7 @@ class ExecutionEngine():
                     register[-1] = '0' * 16
                     reg_file.update(register)
                     self.compare = False
-                return False,nextPC,reg_file,memory_access
+                return False,nextPC,reg_file,mem_lst
             elif(opcode=='10001'):
                 updated_reg_file,nextPC=gt_jump(reg_file.register_file,PC,mem_addr)
                 reg_file.update(updated_reg_file)
@@ -166,7 +166,7 @@ class ExecutionEngine():
                     register[-1] = '0' * 16
                     reg_file.update(register)
                     self.compare = False
-                return False,nextPC,reg_file,memory_access
+                return False,nextPC,reg_file,mem_lst
             elif(opcode=='10010'):
                 updated_reg_file,nextPC=eq_jump(reg_file.register_file,PC,mem_addr)
                 reg_file.update(updated_reg_file)
@@ -175,19 +175,19 @@ class ExecutionEngine():
                     register[-1] = '0' * 16
                     reg_file.update(register)
                     self.compare = False
-                return False,nextPC,reg_file,memory_access
+                return False,nextPC,reg_file,mem_lst
             
         elif(opcode in ['00101','00100']):
             """
             This is the code for load store instructions
             """
             mem_addr = instr[-8:]
-            memory_access.update({cycle: [instr, mem_addr]})
+            mem_lst.append(mem_addr)
             if(opcode=='00100'):
                 updated_reg_file=load(reg_file.register_file,self.memory,instr[5:8],mem_addr)
                 reg_file.update(updated_reg_file)
                 PC+=1
-                return False,PC,reg_file,memory_access
+                return False,PC,reg_file,mem_lst
             else:
                 self.memory=store(reg_file.register_file,self.memory,instr[5:8],mem_addr)
                 PC+=1
@@ -196,6 +196,6 @@ class ExecutionEngine():
                     register[-1]='0'*16
                     reg_file.update(register)
                     self.compare=False       
-                return False,PC,reg_file,memory_access
+                return False,PC,reg_file,mem_lst
         else:
-            return True,PC,reg_file,memory_access
+            return True,PC,reg_file,mem_lst
