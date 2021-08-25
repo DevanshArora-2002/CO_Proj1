@@ -42,7 +42,7 @@ def func_B_C(instruction,line_no):
     if(len(instruction)!=3):
         raise error.SyntaxException("Illegal use of syntax",line_no)
     reg_address = {"R0": "000", "R1": "001", "R2": "010", "R3": "011",
-                   "R4": "100", "R5": "101", "R6": "110", "FLAGS": "111"}
+                   "R4": "100", "R5": "101", "R6": "110","FLAGS":"111"}
     x=instruction[1]
     if(x not in reg_address):
         raise error.SyntaxException("Invalid use of registers",line_no)
@@ -51,7 +51,6 @@ def func_B_C(instruction,line_no):
         encoding = typeB(opcode, reg_address[instruction[1]], decimal_to_binary(instruction[2][1:],line_no))
     elif (instruction[0] == "mov" and instruction[2][0] != "$"):  # type C
         opcode = "00011"
-        
         if(instruction[2] not in reg_address):
             raise error.SyntaxException("Invalid use of registers",line_no)
         encoding = typeC(opcode, reg_address[instruction[1]], reg_address[instruction[2]])
@@ -59,6 +58,8 @@ def func_B_C(instruction,line_no):
         opcode = "00111"
         if (instruction[2] not in reg_address):
             raise error.SyntaxException("Invalid use of registers",line_no)
+        if(instruction[2]=="FLAGS"):
+            raise error.FlagException("Invlaid use of FLAGS",line_no)
         encoding = typeC(opcode, reg_address[instruction[1]], reg_address[instruction[2]])
     elif (instruction[0] == "rs"):  # type B
         opcode = "01000"
@@ -70,10 +71,14 @@ def func_B_C(instruction,line_no):
         opcode = "01101"
         if (instruction[2] not in reg_address):
             raise error.SyntaxException("Invalid use of registers",line_no)
+        if(instruction[2]=="FLAGS"):
+            raise error.FlagException("Invalid use of FLAGS",line_no)
         encoding = typeC(opcode, reg_address[instruction[1]], reg_address[instruction[2]])
     elif (instruction[0] == "cmp"):  # type C
         opcode = "01110"
         if (instruction[2] not in reg_address):
             raise error.SyntaxException("Invalid use of registers",line_no)
+        if (instruction[2]=="FLAGS"):
+            raise error.FlagException("Invalid use of FLAGS",line_no)
         encoding = typeC(opcode, reg_address[instruction[1]], reg_address[instruction[2]])
     return encoding
