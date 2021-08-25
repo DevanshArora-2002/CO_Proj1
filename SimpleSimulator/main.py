@@ -37,8 +37,6 @@ def main():
         PC.update(Next_PC)
         cycle+=1
     memory.dump()
-    print(cycles)
-    print(mem_accesses)
     plt.scatter(cycles, mem_accesses)
     plt.xlabel("Cycles")
     plt.ylabel("Memory Addresses")
