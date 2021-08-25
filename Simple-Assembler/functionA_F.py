@@ -7,9 +7,11 @@ def func_A(user_input,line_no):
     y=arr[2]
     z=arr[3]
     reg_address = {"R0": "000", "R1": "001", "R2": "010", "R3": "011",
-                   "R4": "100", "R5": "101", "R6": "110", "FLAGS": "111"}
+                   "R4": "100", "R5": "101", "R6": "110","FLAGS":"111"}
     if (x not in reg_address or y not in reg_address or z not in reg_address):
         raise error.SyntaxException("Invalid Use of Registers",line_no)
+    if(x=="FLAGS" or y=="FLAGS" or z=="FLAGS"):
+        raise error.FlagException("Invalid use of flags",line_no)
     if(arr[0]=="add"):
         opcode="00000"
     if(arr[0]=="sub"):
