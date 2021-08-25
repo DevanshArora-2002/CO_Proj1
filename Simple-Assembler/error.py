@@ -3,6 +3,11 @@ class SyntaxException(Exception):
         super().__init__(msg+" at line no-"+str(line))
         pass
     pass
+class FlagException(Exception):
+    def __init__(self,msg,line):
+        super().__init__(msg+" at line no-"+str(line))
+        pass
+    pass
 class ImmediateException(Exception):
     def __init__(self,msg,line):
         super().__init__(msg+" at line no-"+str(line))
