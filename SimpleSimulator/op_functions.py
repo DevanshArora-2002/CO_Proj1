@@ -9,10 +9,10 @@ def add_func(register_file,reg_code1,reg_code2,reg_code3):
     val1=val2+val3
     if(val1>255):
         register_file[-1]='0'*12+'1000'
-        return register_file
+        return register_file,True
     str_val1=decimal_to_binary(val1)
     register_file[dict[reg_code1]]='0'*8+str_val1
-    return register_file
+    return register_file,False
 def sub_func(register_file,reg_code1,reg_code2,reg_code3):
     dict={'000':0,'001':1,'010':2,'011':3,'100':4,'101':5,'110':6,'111':7}
     str_val2=register_file[dict[reg_code2]]
@@ -22,11 +22,11 @@ def sub_func(register_file,reg_code1,reg_code2,reg_code3):
     if(val3>val2):
         register_file[dict[reg_code1]]='0'*16
         register_file[-1]='0'*12+'1000'
-        return register_file
+        return register_file,True
     val1=val2-val3
     str_val1=decimal_to_binary(val1)
     register_file[dict[reg_code1]]='0'*8+str_val1
-    return register_file
+    return register_file,False
 def mul_func(register_file,reg_code1,reg_code2,reg_code3):
     dict={'000':0,'001':1,'010':2,'011':3,'100':4,'101':5,'110':6,'111':7}
     str_val2=register_file[dict[reg_code2]]
@@ -36,10 +36,10 @@ def mul_func(register_file,reg_code1,reg_code2,reg_code3):
     val1=val2*val3
     if(val1>255):
         register_file[-1]='0'*12+'1000'
-        return register_file
+        return register_file,True
     str_val1=decimal_to_binary(val1)
     register_file[dict[reg_code1]]='0'*8+str_val1
-    return register_file
+    return register_file,False
 def div_func(register_file,reg_code3,reg_code4):
     dict={'000':0,'001':1,'010':2,'011':3,'100':4,'101':5,'110':6,'111':7}
     str_val1=register_file[dict[reg_code3]]
