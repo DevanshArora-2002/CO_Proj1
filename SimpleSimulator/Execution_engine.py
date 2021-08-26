@@ -10,6 +10,7 @@ class ExecutionEngine():
         self.memory=memory
         self.program_counter=program_counter
         self.compare=False
+        self.overflow=False
         """if the next instruction to compare instruction 
            is not a jump instruction then the flag is set to 0
         """
@@ -18,7 +19,11 @@ class ExecutionEngine():
         mem_lst = []
         opcode=instr[0:5]
         if(opcode in ['00000','00001','00110','00111']):
-                    
+            if(self.overflow):
+                register=reg_file.register_file
+                register[-1]='0'*16
+                reg_file.update(register)
+                self.overflow=False
             """
             The code for arthemetic operations
             """
@@ -31,13 +36,13 @@ class ExecutionEngine():
             reg_code1 = instr[-9:-6]
             if(opcode!='00111'):                
                 if(opcode=='00000'):                    
-                    updated_reg_file=add_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    updated_reg_file,self.overflow=add_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
                     reg_file.update(updated_reg_file)         
                 elif(opcode=='00001'):
-                    updated_reg_file=sub_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    updated_reg_file,self.overflow=sub_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
                     reg_file.update(updated_reg_file)
                 else:
-                    updated_reg_file=mul_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
+                    updated_reg_file,self.overflow=mul_func(reg_file.register_file,reg_code1,reg_code2,reg_code3)
                     reg_file.update(updated_reg_file)
             else:
                 updated_reg_file=div_func(reg_file.register_file,reg_code2,reg_code3)
@@ -53,9 +58,13 @@ class ExecutionEngine():
             """
             This code is for shift operations
             """
-            
+            if (self.overflow):
+                register = reg_file.register_file
+                register[-1] = '0' * 16
+                reg_file.update(register)
+                self.overflow = False
             imm=instr[-8:]
-            reg_code=instr[-11:-8]
+            reg_code=instr[5:8]
             if(opcode=='01000'):
                 updated_reg_file=rs_func(reg_file.register_file,reg_code,imm)
                 reg_file.update(updated_reg_file)
@@ -73,7 +82,11 @@ class ExecutionEngine():
             """
             This code is for bitwise operations
             """
-            
+            if (self.overflow):
+                register = reg_file.register_file
+                register[-1] = '0' * 16
+                reg_file.update(register)
+                self.overflow = False
             reg_code3 = instr[-3:]
             """
             For div function reg_code3 will act as the reg_code2 and similarly for 
@@ -105,7 +118,11 @@ class ExecutionEngine():
             """
             This is for mov instruction
             """
-            
+            if (self.overflow):
+                register = reg_file.register_file
+                register[-1] = '0' * 16
+                reg_file.update(register)
+                self.overflow = False
             if(opcode=='00011'):
                 reg_code2=instr[-3:]
                 reg_code1=instr[-6:-3]
@@ -126,7 +143,12 @@ class ExecutionEngine():
         elif(opcode=='01110'):
             """
             This code is for compare instructions
-            """            
+            """
+            if (self.overflow):
+                register = reg_file.register_file
+                register[-1] = '0' * 16
+                reg_file.update(register)
+                self.overflow = False
             reg_2=instr[-3:]
             reg_1=instr[-6:-3]
             updated_reg_file=cmp(reg_file.register_file,reg_1,reg_2)
@@ -138,6 +160,11 @@ class ExecutionEngine():
             """
             This code is for jump instructions
             """
+            if (self.overflow):
+                register = reg_file.register_file
+                register[-1] = '0' * 16
+                reg_file.update(register)
+                self.overflow = False
             mem_addr=instr[-8:]
             mem_lst.append(mem_addr)
             if(opcode=='01111'):
@@ -181,6 +208,11 @@ class ExecutionEngine():
             """
             This is the code for load store instructions
             """
+            if (self.overflow):
+                register = reg_file.register_file
+                register[-1] = '0' * 16
+                reg_file.update(register)
+                self.overflow = False
             mem_addr = instr[-8:]
             mem_lst.append(mem_addr)
             if(opcode=='00100'):
@@ -198,4 +230,14 @@ class ExecutionEngine():
                     self.compare=False       
                 return False,PC,reg_file,mem_lst
         else:
+            if (self.overflow):
+                register = reg_file.register_file
+                register[-1] = '0' * 16
+                reg_file.update(register)
+                self.overflow = False
+                if (self.compare):
+                    register = reg_file.register_file
+                    register[-1] = '0' * 16
+                    reg_file.update(register)
+                    self.compare = False
             return True,PC,reg_file,mem_lst
