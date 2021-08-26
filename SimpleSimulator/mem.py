@@ -38,7 +38,8 @@ class Memory:
         Output -> 16 bit binary string
         '''
         return self.mem_arr[PC]
-
+    def fetch_memory(self,addr):
+        return self.mem_arr[addr]
     def dump(self):
         '''
         Prints the entire contents of the memory.
